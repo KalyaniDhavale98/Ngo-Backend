@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -29,6 +30,13 @@ public class DonationItem {
 	// one to one mapping unidireactional
 	@OneToOne(cascade = CascadeType.ALL)
 	private Donation donation;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "jdonorId", referencedColumnName = "donorId")
+	Donor doder;
+
+	@Enumerated(EnumType.STRING)
+	private DonationType donationtype;
 
 	// getters and setters
 	public int getItemId() {
@@ -53,6 +61,14 @@ public class DonationItem {
 
 	public void setItemDescription(String itemDescription) {
 		this.itemDescription = itemDescription;
+	}
+
+	public DonationType getDonationtype() {
+		return donationtype;
+	}
+
+	public void setDonationtype(DonationType donationtype) {
+		this.donationtype = donationtype;
 	}
 
 	// to string
