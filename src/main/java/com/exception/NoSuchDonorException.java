@@ -1,7 +1,9 @@
 package com.exception;
 
-public class NoSuchDonorException extends Exception {
-	public NoSuchDonorException(String message) {
-		super(message);
-}
+public class NoSuchDonorException extends Exception{
+
+	public NoSuchDonorException(String string) {
+		super(string);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.model;
 
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,11 +17,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Address implements Serializable {
+public class Address implements Serializable  {
 	// fields
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "address_id", nullable = false)
+	@Column(name = "address_id")
 	private int addressId;
 	@NotNull
 	private String city;

@@ -1,63 +1,37 @@
 package com.model;
 
-import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.PrePersist;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Donation implements Serializable {
+public class Donation {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private int donationId;
-	@NotNull // validation
 	private double donationAmount;
 	@NotNull
+	@Temporal(TemporalType.DATE)
 	private Date donationDate;
+	@NotNull
+	private String donationType;
 
-	// one to one mapping unidireactional
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "donor_id")
-	private Donor donor;
-
-	// one to one mapping unidireactional
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "item_id")
-	private DonationItem item;
-
-	// getter and setter
 	public int getDonationId() {
 		return donationId;
 	}
 
 	public void setDonationId(int donationId) {
 		this.donationId = donationId;
-	}
-
-	public Donor getDonor() {
-		return donor;
-	}
-
-	public void setDonor(Donor donor) {
-		this.donor = donor;
-	}
-
-	public DonationItem getItem() {
-		return item;
-	}
-
-	public void setItem(DonationItem item) {
-		this.item = item;
 	}
 
 	public double getDonationAmount() {
@@ -76,11 +50,23 @@ public class Donation implements Serializable {
 		this.donationDate = donationDate;
 	}
 
-	// tostring
+	@PrePersist
+	protected void onCreate() {
+		donationDate = new Date();
+	}
+
+	public String getDonationType() {
+		return donationType;
+	}
+
+	public void setDonationType(String donationType) {
+		this.donationType = donationType;
+	}
+
 	@Override
 	public String toString() {
 		return "Donation [donationId=" + donationId + ", donationAmount=" + donationAmount + ", donationDate="
-				+ donationDate + ", donor=" + donor + ", item=" + item + "]";
+				+ donationDate + ", donationType=" + donationType + "]";
 	}
 
 }

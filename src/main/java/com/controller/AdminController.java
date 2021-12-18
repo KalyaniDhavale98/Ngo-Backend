@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.repository.AddressRepository;
 import com.repository.EmployeeRepository;
 import com.dto.EmployeeDto;
 import com.exception.DuplicateEmployeeException;
 import com.exception.NoSuchEmployeeException;
+import com.model.Address;
 import com.model.Employee;
+import com.service.AddressServiceImpl;
 import com.service.IAdminService;
 
 
@@ -36,6 +39,8 @@ public class AdminController {
 	@Autowired
 	EmployeeRepository empDao;
 
+	@Autowired
+	AddressServiceImpl addService;
 	//welcome note
 	@RequestMapping("/Hello")
 	public String helloAdmin() {
@@ -53,7 +58,7 @@ public class AdminController {
 	}
 	
 	//get all employees
-	@GetMapping("/employee/get")
+	@GetMapping("/employee")
 	public ResponseEntity<List<Employee>> getEmployees() {
 		List<Employee> lcl = adminService.getEmployees();
 		ResponseEntity<List<Employee>> re = new ResponseEntity<List<Employee>>(lcl, HttpStatus.OK);
@@ -70,9 +75,9 @@ public class AdminController {
 	}
 	
 	//delete employee details
-	@DeleteMapping(path = "/employee/remove/{eid}")
-	public ResponseEntity<Employee> removeEmployee(@PathVariable int eid) throws NoSuchEmployeeException {
-		adminService.removeEmployee(eid, null);
+	@DeleteMapping(path = "/employee/remove/{employeeId}")
+	public ResponseEntity<Employee> removeEmployee(@PathVariable int employeeId) throws NoSuchEmployeeException {
+		Employee employee =adminService.removeEmployee(employeeId);
 
 		ResponseEntity<Employee> re = new ResponseEntity<Employee>(HttpStatus.OK);
 		return re;

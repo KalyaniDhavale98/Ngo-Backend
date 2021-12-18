@@ -11,8 +11,10 @@ import com.repository.DonationRepository;
 import com.repository.DonorRepository;
 import com.exception.DuplicateDonorException;
 import com.exception.NoSuchDonorException;
+import com.model.Address;
 import com.model.Donation;
 import com.model.Donor;
+import com.model.Employee;
 
 @Service
 public class DonorServiceImpl implements IDonorService {
@@ -24,7 +26,7 @@ public class DonorServiceImpl implements IDonorService {
 	@Autowired
 	DonationRepository donationRepo;
 
-	Donor donor = null;
+	
 
 	// implemented methods
 
@@ -44,6 +46,7 @@ public class DonorServiceImpl implements IDonorService {
 			d.setDonorPhone(donor.getDonorPhone());
 			d.setDonorUsername(donor.getDonorUsername());
 			d.setDonorPassword(donor.getDonorPassword());
+			
 			donorRepo.save(donor);
 		}
 		return donor;
@@ -53,6 +56,12 @@ public class DonorServiceImpl implements IDonorService {
 	public List<Donor> getDonors() {
 		List<Donor> e = donorRepo.findAll();
 		return e;
+	}
+	
+	public Donor getDonorById(int donorId) {
+		Optional<Donor> e = donorRepo.findById(donorId);
+		return e.get();
+		
 	}
 	
 	//modify donor details
@@ -76,12 +85,9 @@ public class DonorServiceImpl implements IDonorService {
 	
 	//delete a donor
 	@Override
-	public Donor removeDonor(int donorId, Donor donor) throws NoSuchDonorException {
-		if (donorId != 0)
-			donorRepo.deleteById(donorId);
-
-		else
-			throw new NoSuchDonorException("donor is not there in database");
+	public Donor removeDonor(int donorId) throws NoSuchDonorException {
+		Donor donor = donorRepo.findById(donorId).get();
+		donorRepo.deleteById(donorId);
 		return donor;
 		
 	}
@@ -117,11 +123,12 @@ public class DonorServiceImpl implements IDonorService {
 		System.out.println("Thankyou for donating");
 
 	}
-
+	Donor donor = null;
 	// donor forgot password
 	@Override
 	public String forgotPassword(String username, String password) {
 
+		
 		if (donor.getDonorUsername().equals(username)) {
 			if (!donor.getDonorPassword().equals(password)) {
 				System.out.println("your password is not correct try to reset your password");
@@ -147,6 +154,8 @@ public class DonorServiceImpl implements IDonorService {
 		System.out.println("click here to get your the password");
 
 	}
+	
+	
 	
 
 	

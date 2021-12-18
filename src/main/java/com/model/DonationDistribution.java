@@ -27,8 +27,7 @@ public class DonationDistribution {
 	@NotNull
 	private Date approvalOrRejectedDate;
 
-	@Enumerated(EnumType.STRING)
-	private DonationDistributionStatus status;
+	
 
 	// one to one mapping unidireactional
 	@OneToOne(cascade = CascadeType.ALL)
@@ -101,19 +100,13 @@ public class DonationDistribution {
 		this.approvalOrRejectedDate = approvalOrRejectedDate;
 	}
 
-	public DonationDistributionStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(DonationDistributionStatus status) {
-		this.status = status;
-	}
-
 	@Override
 	public String toString() {
 		return "DonationDistribution [distributionId=" + distributionId + ", amountDistributed=" + amountDistributed
 				+ ", dateOfDistribution=" + dateOfDistribution + ", approvalOrRejectedDate=" + approvalOrRejectedDate
-				+ ", status=" + status + ", person=" + person + ", employee=" + employee + ", item=" + item + "]";
+				+ ", person=" + person + ", employee=" + employee + ", item=" + item + "]";
 	}
+
+	
 
 }

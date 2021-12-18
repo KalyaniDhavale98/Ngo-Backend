@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.repository.NeedyPeopleRepository;
 import com.exception.NoSuchDonorException;
 import com.exception.NoSuchNeedyPeopleException;
 import com.model.Donor;
 import com.model.NeedyPeople;
-import com.repository.NeedyPeopleRepository;
 
 @Service
 public class NeedypeopleServiceImpl implements INeedyPeopleService {
@@ -48,11 +48,6 @@ public class NeedypeopleServiceImpl implements INeedyPeopleService {
 		}
 	}
 
-	// needy people can request for help
-	@Override
-	public boolean requestForHelp(NeedyPeople person) {
-		System.out.println("send your request through mail box");
-		return false;
-	}
+
 
 }

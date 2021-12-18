@@ -1,5 +1,12 @@
 package com.exception;
 
-public class DuplicateEmployeeException extends Exception {
+import com.model.Employee;
 
+public class DuplicateEmployeeException extends Exception{
+
+	public DuplicateEmployeeException() {}
+	public DuplicateEmployeeException(String emp) 
+	{
+		super(emp);
+	}
 }

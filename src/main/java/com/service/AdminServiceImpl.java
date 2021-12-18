@@ -8,23 +8,26 @@ import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.repository.AdminRepository;
 import com.dto.EmployeeDto;
 import com.exception.DuplicateEmployeeException;
 import com.exception.NoSuchEmployeeException;
+import com.model.Address;
 import com.model.DonationDistribution;
 import com.model.Employee;
-import com.repository.AdminRepository;
-import com.repository.EmployeeRepository;
 
 @Service
 public class AdminServiceImpl implements IAdminService {
+	//employee services that was handled by the admin
+	
+	@Autowired
+	AdminRepository adminRepo;
+	
+	
+	
+//implementation methods
 
-	@Autowired
-	AdminRepository adminRepository;
-	
-	@Autowired
-	EmployeeRepository empRepository;
-	
+	// add method for employee
 	@Override
 	public Employee addEmployee(Employee employee) throws DuplicateEmployeeException, SQLException {
 		int id = employee.getEmployeeId();
@@ -37,15 +40,35 @@ public class AdminServiceImpl implements IAdminService {
 			emp.setEmail(employee.getEmail());
 			emp.setUsername(employee.getUsername());
 			emp.setPassword(employee.getPassword());
-			empRepository.save(employee);
+			
+			Address add=new Address();
+			add.setCity(employee.getAddress().getCity());
+			add.setState(employee.getAddress().getState());
+			add.setPin(employee.getAddress().getPin());
+			add.setLandmark(employee.getAddress().getLandmark());
+			
+			
+			adminRepo.save(employee);
 		}
 		return employee;
 	}
 
+	// get all employees data
+	@Override
+	public List<Employee> getEmployees() {
+		List<Employee> e = adminRepo.findAll();
+
+		return e;
+	}
+	
+	
+
+	// update the employee details
+
 	@Override
 	public Employee modifyEmployee(int employeeId,Employee employee) throws Throwable {
 		
-		Optional<Employee> optional = empRepository.findById(employeeId);
+		Optional<Employee> optional = adminRepo.findById(employeeId);
 		if(!optional.isPresent()) {
 			throw new NoSuchEmployeeException("Employee Does not exist in the database");
 		}
@@ -57,16 +80,14 @@ public class AdminServiceImpl implements IAdminService {
 	    emp.setUsername(emp.getUsername());
 	    emp.setPassword(employee.getPassword());
 	    
-		return empRepository.save (emp);
+		return adminRepo.save (emp);
 	}
+
 	// remove the employee data
 	@Override
-	public Employee removeEmployee(int employeeId,Employee employee) throws NoSuchEmployeeException {
-		if (employeeId != 0)
-			empRepository.deleteById(employeeId);
-
-		else
-			throw new NoSuchEmployeeException("Employee is not there in database");
+	public Employee removeEmployee(int employeeId) throws NoSuchEmployeeException {
+		Employee employee = adminRepo.findById(employeeId).get();
+		adminRepo.deleteById(employeeId);
 		return employee;
 
 	}
@@ -75,7 +96,7 @@ public class AdminServiceImpl implements IAdminService {
 	@Override
 	public EmployeeDto findEmployeeById(int employeeId) throws NoSuchEmployeeException {
 		
-		Optional<Employee> employee = empRepository.findById(employeeId);
+		Optional<Employee> employee = adminRepo.findById(employeeId);
 		if(!employee.isPresent()) {
 			throw new NoSuchEmployeeException("Student not found with given employeeId "+employeeId);
 		}
@@ -94,26 +115,25 @@ public class AdminServiceImpl implements IAdminService {
 		return dto;
 
 	}
+
 	// find employee by using name
 	@Override
 	public Employee findEmployeeByName(String name) throws NoSuchEmployeeException {
-		Employee e = empRepository.findByEmployeeName(name);
+		Employee e = adminRepo.findByEmployeeName(name);
 		return e;
 
 	}
 
-	// get all employees data
-	@Override
-	public List<Employee> getEmployees() {
-		List<Employee> e = empRepository.findAll();
-
-		return e;
-	}
-
+	// final check to approve donation
 	@Override
 	public boolean approveDonation(DonationDistribution distribution) {
 		System.out.println("donation was approved");
 		return false;
 	}
+
+	
+
+	
+
 
 }

@@ -9,6 +9,4 @@ import com.model.NeedyPeople;
 public interface INeedyPeopleService {
 	public NeedyPeople registerNeedyPerson(NeedyPeople person) throws NoSuchNeedyPeopleException;
 	public NeedyPeople login(NeedyPeople person) throws NoSuchNeedyPeopleException, NoSuchDonorException;
-	public boolean requestForHelp(NeedyPeople person);
-
 }

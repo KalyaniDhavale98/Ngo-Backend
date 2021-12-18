@@ -1,5 +1,6 @@
 package com.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -8,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,65 +17,86 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-public class DonationItem {
-	// fields
+@Table(name = "donation_item")
+public class DonationItem implements Serializable {
+
+	// donation fields
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int itemId;
+	@GeneratedValue
+	@Column(name = "item_id")
+	private int dItemId;
+	
+	@Column(name = "item_description")
 	private String itemDescription;
 
+	// enum mapping to donationType
 	@Enumerated(EnumType.STRING)
 	private DonationType item;
 
-	// one to one mapping unidireactional
-	@OneToOne(cascade = CascadeType.ALL)
-	private Donation donation;
+//	// mapping to donation
+//	@OneToOne(cascade = CascadeType.ALL)
+//	private Donation donation;
+	
+
+//	public Donation getDonation() {
+//		return donation;
+//	}
+//
+//	public void setDonation(Donation donation) {
+//		this.donation = donation;
+//	}
+
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "jdonorId", referencedColumnName = "donorId")
-	Donor doder;
-
-	@Enumerated(EnumType.STRING)
-	private DonationType donationtype;
-
+	@JoinColumn(name = "donor_id", referencedColumnName = "donor_id")
+	Donor donor;
 	// getters and setters
-	public int getItemId() {
-		return itemId;
-	}
 
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
-	}
+	
 
-	public DonationType getItem() {
-		return item;
-	}
-
-	public void setItem(DonationType item) {
-		this.item = item;
-	}
+	
 
 	public String getItemDescription() {
 		return itemDescription;
 	}
 
+	
+
+	public int getdItemId() {
+		return dItemId;
+	}
+
+	public void setdItemId(int dItemId) {
+		this.dItemId = dItemId;
+	}
+
 	public void setItemDescription(String itemDescription) {
 		this.itemDescription = itemDescription;
 	}
-
-	public DonationType getDonationtype() {
-		return donationtype;
+	public DonationType getItem() {
+		return item;
+	}
+	public void setItem(DonationType item) {
+		this.item = item;
+	}
+	public Donor getDonor() {
+		return donor;
 	}
 
-	public void setDonationtype(DonationType donationtype) {
-		this.donationtype = donationtype;
+	public void setDonor(Donor donor) {
+		this.donor = donor;
 	}
 
-	// to string
+	public DonationItem() {
+		super();
+		
+	}
+
 	@Override
 	public String toString() {
-		return "DonationItem [itemId=" + itemId + ", itemDescription=" + itemDescription + ", item=" + item
-				+ ", donation=" + donation + "]";
+		return "DonationItem [dItemId=" + dItemId + ", itemDescription=" + itemDescription + ", item=" + item
+				+ ", donor=" + donor + "]";
 	}
+
 
 }

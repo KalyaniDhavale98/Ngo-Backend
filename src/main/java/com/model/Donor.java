@@ -1,5 +1,6 @@
 package com.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,52 +18,52 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-public class Donor {
-	// fields
+@Table(name = "donor")
+public class Donor implements Serializable {
+	// donor fields
+
 	@Id
 	@GeneratedValue
+	@Column(name = "donor_id")
 	private int donorId;
 	@NotNull
 	@Size(min = 3, message = "First Name should have atleast 3 characters")
+	@Column(name = "donor_name")
 	private String donorName;
 	@NotNull
 	@Email
+	@Column(name = "donor_email", unique = true)
 	private String donorEmail;
 	@NotNull
+	@Column(name = "donor_phone")
 	private String donorPhone;
 	@NotNull
+	@Column(name = "donor_username")
 	private String donorUsername;
 	@NotNull
 	@Size(min = 8, message = "password should have atleast 8 characters")
+	@Column(name = "donor_password")
 	private String donorPassword;
 
-	/*
-	 * adding a new column to store a random token key which is used to protect the
-	 * reset password update the corresponding entity class, by declaring a new
-	 * field named resetPasswordToken
-	 */
-	// private String resetPasswordToken;
-
-	// one to one mapping unidireactional
+	// mapping to address
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
 	private Address address;
 	
 	@OneToMany
 	List<DonationItem> donationitems;
-
-	// no_arg constructor
-	public Donor() {
-	}
-
-	// parameterised constructor
-	public Donor(String donorUsername, String donorPassword) {
-		super();
+	
+	//default constructor
+	public Donor() {}
+	
+	// parametarised constructor
+	public Donor(@NotNull String donorUsername, @NotNull String donorPassword) {
 		this.donorUsername = donorUsername;
 		this.donorPassword = donorPassword;
 	}
 
-	// getter and setters
+	// getters and setters
+
 	public int getDonorId() {
 		return donorId;
 	}
@@ -118,11 +119,6 @@ public class Donor {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	/*
-	 * public String getResetPasswordToken() { return resetPasswordToken; } public
-	 * void setResetPasswordToken(String resetPasswordToken) {
-	 * this.resetPasswordToken = resetPasswordToken; }
-	 */
 
 	// to string
 	@Override
